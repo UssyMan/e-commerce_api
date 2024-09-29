@@ -1,0 +1,7 @@
+package com.uthmanIV.e_commerce.product.repositories;
+
+import com.uthmanIV.e_commerce.product.entities.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository<Category,Integer> {
+}
