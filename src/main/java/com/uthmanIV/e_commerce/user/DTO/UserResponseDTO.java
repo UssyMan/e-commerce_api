@@ -1,6 +1,6 @@
 package com.uthmanIV.e_commerce.user.DTO;
 
-import com.uthmanIV.e_commerce.user.entities.Roles;
+import com.uthmanIV.e_commerce.user.entities.Role;
 
 import java.util.Set;
 
@@ -9,6 +9,6 @@ public record UserResponseDTO(
         String email,
         String firstName,
         String lastName,
-        Set<Roles> roles
+        Set<Role> roles
 ) {
 }

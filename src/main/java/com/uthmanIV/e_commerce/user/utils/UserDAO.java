@@ -2,7 +2,7 @@ package com.uthmanIV.e_commerce.user.utils;
 
 import com.uthmanIV.e_commerce.user.DTO.UserRequestDTO;
 import com.uthmanIV.e_commerce.user.DTO.UserResponseDTO;
-import com.uthmanIV.e_commerce.user.entities.Roles;
+import com.uthmanIV.e_commerce.user.entities.Role;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public interface UserDAO {
     List<UserResponseDTO> getAll();
-    UserResponseDTO findById(Integer id);
+    UserResponseDTO findById(int id);
 
     UserResponseDTO createUser(UserRequestDTO user);
 
@@ -20,6 +20,6 @@ public interface UserDAO {
 
     UserResponseDTO deleteUser(Integer id);
 
-    List<UserResponseDTO> findByRole(Roles role);
+    List<UserResponseDTO> findByRole(Role role);
 
 }

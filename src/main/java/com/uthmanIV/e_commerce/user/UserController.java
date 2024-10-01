@@ -2,7 +2,7 @@ package com.uthmanIV.e_commerce.user;
 
 import com.uthmanIV.e_commerce.user.DTO.UserRequestDTO;
 import com.uthmanIV.e_commerce.user.DTO.UserResponseDTO;
-import com.uthmanIV.e_commerce.user.entities.Roles;
+import com.uthmanIV.e_commerce.user.entities.Role;
 import com.uthmanIV.e_commerce.user.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping("/roles")
     private ResponseEntity<List<UserResponseDTO>> getUsersByRole(
-            @RequestBody Roles role){
+            @RequestBody Role role){
         return ResponseEntity.ok(userService.findByRole(role));
     }
 }

@@ -2,7 +2,7 @@ package com.uthmanIV.e_commerce.user.services;
 
 import com.uthmanIV.e_commerce.user.DTO.UserRequestDTO;
 import com.uthmanIV.e_commerce.user.DTO.UserResponseDTO;
-import com.uthmanIV.e_commerce.user.entities.Roles;
+import com.uthmanIV.e_commerce.user.entities.Role;
 import com.uthmanIV.e_commerce.user.entities.User;
 import com.uthmanIV.e_commerce.user.utils.UserDAO;
 import com.uthmanIV.e_commerce.user.utils.UserMapper;
@@ -32,7 +32,7 @@ public class UserService implements UserDAO {
     }
 
     @Override
-    public UserResponseDTO findById(Integer id) {
+    public UserResponseDTO findById(int id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isPresent()){
             return userMapper.toDto(optionalUser.get());
@@ -87,9 +87,9 @@ public class UserService implements UserDAO {
     }
 
     @Override
-    public List<UserResponseDTO> findByRole(Roles role) {
+    public List<UserResponseDTO> findByRole(Role role) {
         return userMapper.
-                toDto(userRepository.findByRole(role));
+                toDto(userRepository.findByRoles(role));
 
     }
 }
