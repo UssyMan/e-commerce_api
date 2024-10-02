@@ -5,7 +5,6 @@ import com.uthmanIV.e_commerce.product.DTO.ProductDTO;
 import com.uthmanIV.e_commerce.product.DTO.ProductResponseDTO;
 import com.uthmanIV.e_commerce.product.entities.Product;
 import com.uthmanIV.e_commerce.product.mappers.ProductMapper;
-import com.uthmanIV.e_commerce.product.repositories.CategoryRepository;
 import com.uthmanIV.e_commerce.product.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +70,7 @@ public class ProductService implements ProductDAO {
 
     @Override
     public List<ProductResponseDTO> findByCategory(String category) {
-        return null;
+        return productMapper
+                .toDtoList(productRepository.findByCategory(category));
     }
 }

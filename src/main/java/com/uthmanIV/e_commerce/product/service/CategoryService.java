@@ -1,14 +1,21 @@
 package com.uthmanIV.e_commerce.product.service;
 
+import com.uthmanIV.e_commerce.product.DAO.CategoryDAO;
 import com.uthmanIV.e_commerce.product.DTO.CategoryDTO;
 import com.uthmanIV.e_commerce.product.entities.Category;
+import com.uthmanIV.e_commerce.product.mappers.CategoryMapper;
 import com.uthmanIV.e_commerce.product.repositories.CategoryRepository;
 
-public class CategoryService {
-    private final CategoryRepository categoryRepository;
+import java.util.List;
+import java.util.Optional;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+public class CategoryService implements CategoryDAO {
+    private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper ;
+
+    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
+        this.categoryMapper = categoryMapper;
     }
 
     public Category resolve(String categoryName) {
@@ -22,4 +29,36 @@ public class CategoryService {
                 });
     }
 
+    @Override
+    public Category findCategoryById(int id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Not found"));
+    }
+
+    @Override
+    public Category findCategoryByName(String name) {
+        return categoryRepository.findByName(name)
+                .orElseThrow(()-> new RuntimeException("Not found"));
+    }
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public Category addNewCategory(CategoryDTO dto) {
+        return Optional.of(categoryMapper.toEntity(dto))
+                .filter(categoryDTO -> !categoryRepository.existsByName(dto.name()))
+                .map(categoryRepository::save)
+                .orElseThrow(()-> new RuntimeException("Not found"));
+    }
+
+    @Override
+    public void deleteCategory(String categoryName) {
+        if (findCategoryByName(categoryName) != null){
+            categoryRepository
+                    .delete(findCategoryByName(categoryName));
+        }
+    }
 }
