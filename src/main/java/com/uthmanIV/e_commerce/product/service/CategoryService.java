@@ -51,14 +51,15 @@ public class CategoryService implements CategoryDAO {
         return Optional.of(categoryMapper.toEntity(dto))
                 .filter(categoryDTO -> !categoryRepository.existsByName(dto.name()))
                 .map(categoryRepository::save)
-                .orElseThrow(()-> new RuntimeException("Not found"));
+                .orElseThrow(()-> new RuntimeException("Category already Exists"));
     }
 
     @Override
     public void deleteCategory(String categoryName) {
-        if (findCategoryByName(categoryName) != null){
-            categoryRepository
-                    .delete(findCategoryByName(categoryName));
-        }
+         categoryRepository
+                 .findByName(categoryName)
+                 .ifPresentOrElse(categoryRepository::delete,() -> {
+                     throw  new RuntimeException("Category not found");
+                 });
     }
 }

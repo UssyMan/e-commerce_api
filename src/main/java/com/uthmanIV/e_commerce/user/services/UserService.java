@@ -9,6 +9,7 @@ import com.uthmanIV.e_commerce.user.utils.UserMapper;
 import com.uthmanIV.e_commerce.user.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,57 +34,54 @@ public class UserService implements UserDAO {
 
     @Override
     public UserResponseDTO findById(int id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if(optionalUser.isPresent()){
-            return userMapper.toDto(optionalUser.get());
-        }
-        else{
-            throw new RuntimeException("User not found with id -" + id);
-        }
+        return userRepository.findById(id)
+                .map(userMapper::toDto)
+                .orElseThrow(()-> new RuntimeException("User not found"));
     }
 
     @Override
     public UserResponseDTO createUser(UserRequestDTO user) {
+        if (userRepository.existsByEmail(user.email())) {
+            throw new RuntimeException("User already exists");
+        }
 
-        if (userRepository.existsByEmail(user.email())){
-            throw new RuntimeException("User exists");
-        }
-        else{
-            User newUser = userMapper.toEntity(user);
-            userRepository.save(newUser);
-            return userMapper.toDto(newUser);
-        }
+        User newUser = userMapper.toEntity(user);
+        User savedUser = userRepository.save(newUser);
+
+        return userMapper.toDto(savedUser);
     }
+
 
     @Override
     public UserResponseDTO findByEmail(String email) {
-        User user = null;
-        if (userRepository.findByEmail(email).isPresent()){
-
-            user = userRepository.findByEmail(email).get();
-
-            return userMapper.toDto(user);
-        }
-        else {
-            throw new RuntimeException("User not found");
-        }
+       return userRepository
+               .findByEmail(email)
+               .map(userMapper::toDto)
+               .orElseThrow(()-> new RuntimeException("User not found"));
     }
 
     @Override
-    public UserResponseDTO updateUser(UserRequestDTO user) {
-        return null;
+    public UserResponseDTO updateUser(UserRequestDTO dto) {
+        return userRepository
+                .findByEmail(dto.email())
+                .map(user -> {
+                    user.setEmail(dto.email());
+                    user.setFirstName(dto.firstName());
+                    user.setLastName(dto.lastName());
+                    userRepository.save(user);
+                    return userMapper.toDto(user);
+                })
+                .orElseThrow(()-> new RuntimeException("User not Found"));
     }
 
     @Override
     public UserResponseDTO deleteUser(Integer id) {
-        User demoUser = userMapper.toEntity(findById(id));
-        if (demoUser!= null){
-            userRepository.delete(demoUser);
-            return userMapper.toDto(demoUser);
-        }
-        else{
-            throw new RuntimeException("User does not exist");
-        }
+        return userRepository.findById(id)
+                .map(user ->{
+                    userRepository.delete(user);
+                    return userMapper.toDto(user);
+                })
+                .orElseThrow(()-> new RuntimeException("User not found"));
     }
 
     @Override
