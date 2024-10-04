@@ -22,6 +22,8 @@ public class Category {
 
     @NotBlank
     private String name;
+    @NotBlank
+    private String description;
 
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
     private List<Product> products;

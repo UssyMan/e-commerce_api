@@ -53,6 +53,16 @@ public class CategoryService implements CategoryDAO {
                 .map(categoryRepository::save)
                 .orElseThrow(()-> new RuntimeException("Category already Exists"));
     }
+    @Override
+    public Category updateExistingCategory(CategoryDTO dto){
+        return categoryRepository.findByName(dto.name())
+                .map(category -> {
+                    category.setDescription(dto.description());
+                    categoryRepository.save(category);
+                    return category;
+                })
+                .orElseThrow(()-> new RuntimeException("Category not found"));
+    }
 
     @Override
     public void deleteCategory(String categoryName) {

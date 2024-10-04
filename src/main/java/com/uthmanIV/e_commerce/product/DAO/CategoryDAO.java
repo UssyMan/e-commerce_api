@@ -10,5 +10,6 @@ public interface CategoryDAO {
     Category findCategoryByName(String name);
     List<Category> getAllCategories();
     Category addNewCategory(CategoryDTO dto);
+    Category updateExistingCategory(CategoryDTO dto)
     void deleteCategory(String categoryName);
 }
