@@ -5,10 +5,12 @@ import com.uthmanIV.e_commerce.product.DTO.CategoryDTO;
 import com.uthmanIV.e_commerce.product.entities.Category;
 import com.uthmanIV.e_commerce.product.mappers.CategoryMapper;
 import com.uthmanIV.e_commerce.product.repositories.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CategoryService implements CategoryDAO {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper ;
@@ -25,6 +27,7 @@ public class CategoryService implements CategoryDAO {
                     // Create and save a new Category if not found
                     Category newCategory = new Category();
                     newCategory.setName(categoryName);
+                    newCategory.setDescription("All things" + categoryName);
                     return categoryRepository.save(newCategory);
                 });
     }

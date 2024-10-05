@@ -1,5 +1,6 @@
 package com.uthmanIV.e_commerce.product.DAO;
 
+import com.uthmanIV.e_commerce.product.DTO.CategoryDTO;
 import com.uthmanIV.e_commerce.product.DTO.ProductDTO;
 import com.uthmanIV.e_commerce.product.DTO.ProductResponseDTO;
 import com.uthmanIV.e_commerce.product.entities.Product;
@@ -14,5 +15,5 @@ public interface ProductDAO {
     ProductResponseDTO updateProduct(ProductDTO dto);
 
     Product findProductByName(String name);
-    List<ProductResponseDTO> findByCategory(String category);
+    List<ProductResponseDTO> findByCategory(String CategoryName);
 }

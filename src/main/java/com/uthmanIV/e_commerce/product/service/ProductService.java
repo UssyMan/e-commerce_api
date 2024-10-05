@@ -1,10 +1,13 @@
 package com.uthmanIV.e_commerce.product.service;
 
 import com.uthmanIV.e_commerce.product.DAO.ProductDAO;
+import com.uthmanIV.e_commerce.product.DTO.CategoryDTO;
 import com.uthmanIV.e_commerce.product.DTO.ProductDTO;
 import com.uthmanIV.e_commerce.product.DTO.ProductResponseDTO;
+import com.uthmanIV.e_commerce.product.entities.Category;
 import com.uthmanIV.e_commerce.product.entities.Product;
 import com.uthmanIV.e_commerce.product.mappers.ProductMapper;
+import com.uthmanIV.e_commerce.product.repositories.CategoryRepository;
 import com.uthmanIV.e_commerce.product.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,22 +21,32 @@ public class ProductService implements ProductDAO {
     private final CategoryService categoryService;
 
     private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository, CategoryService categoryService, ProductMapper productMapper) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService, ProductMapper productMapper,
+                          CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
         this.productMapper = productMapper;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
     public ProductResponseDTO addProduct(ProductDTO dto) {
-        return Optional
-                .of(productMapper.toEntity(dto))
-                .filter(p -> !productRepository.existsByName(dto.name()))
-                .map(productRepository::save)
-                .map(productMapper::toDto)
-                .orElseThrow(()-> new RuntimeException("Product already exists"));
+        if (productRepository.existsByName(dto.name())) {
+            throw new RuntimeException("Product already exists");
+        }
+
+        Product product = productMapper.toEntity(dto);
+
+        Category category = categoryService.resolve(dto.categoryName());
+        product.setCategory(category);
+
+        Product savedProduct = productRepository.save(product);
+
+        return productMapper.toDto(savedProduct);
     }
+
 
     @Override
     public ProductResponseDTO findProductById(int id) {
@@ -69,8 +82,11 @@ public class ProductService implements ProductDAO {
     }
 
     @Override
-    public List<ProductResponseDTO> findByCategory(String category) {
-        return productMapper
-                .toDtoList(productRepository.findByCategory(category));
+    public List<ProductResponseDTO> findByCategory(String categoryName) {
+        return Optional.ofNullable(categoryService.findCategoryByName(categoryName))
+                .map(category -> productRepository.findByCategoryName(categoryName)) // Fetch products by category name
+                .map(productMapper::toDtoList) // Map the product entities to DTOs
+                .orElseThrow(() -> new RuntimeException("Category not found or no products available for this category"));
     }
+
 }

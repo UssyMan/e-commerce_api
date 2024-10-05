@@ -13,6 +13,7 @@ import java.util.List;
 public interface ProductMapper {
     @Mapping(source = "categoryName", target = "category.name")
     Product toEntity(ProductDTO dto);
+    @Mapping(source = "category.name", target = "categoryName")
     ProductResponseDTO toDto(Product product);
     List<ProductResponseDTO> toDtoList(List<Product> product);
 }
