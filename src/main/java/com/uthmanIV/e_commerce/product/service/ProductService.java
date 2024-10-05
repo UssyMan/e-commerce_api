@@ -1,5 +1,6 @@
 package com.uthmanIV.e_commerce.product.service;
 
+import com.uthmanIV.e_commerce.commons.ResourceNotFoundException;
 import com.uthmanIV.e_commerce.product.DAO.ProductDAO;
 import com.uthmanIV.e_commerce.product.DTO.CategoryDTO;
 import com.uthmanIV.e_commerce.product.DTO.ProductDTO;
@@ -34,7 +35,7 @@ public class ProductService implements ProductDAO {
     @Override
     public ProductResponseDTO addProduct(ProductDTO dto) {
         if (productRepository.existsByName(dto.name())) {
-            throw new RuntimeException("Product already exists");
+            throw new ResourceNotFoundException("Product already exists");
         }
 
         Product product = productMapper.toEntity(dto);
@@ -52,7 +53,7 @@ public class ProductService implements ProductDAO {
     public ProductResponseDTO findProductById(int id) {
         return productRepository.findById(id)
                 .map(productMapper::toDto)
-                .orElseThrow(()-> new RuntimeException("Product not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
     }
 
     @Override
@@ -72,13 +73,13 @@ public class ProductService implements ProductDAO {
                     existingProduct.setDescription(dto.description());
                     return productMapper.toDto(productRepository.save(existingProduct));
                 })
-                .orElseThrow(()-> new RuntimeException("Product Not Found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product Not Found"));
     }
 
     @Override
     public Product findProductByName(String name) {
         return productRepository.findByName(name)
-                .orElseThrow(()-> new RuntimeException("Product not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
     }
 
     @Override
@@ -86,7 +87,7 @@ public class ProductService implements ProductDAO {
         return Optional.ofNullable(categoryService.findCategoryByName(categoryName))
                 .map(category -> productRepository.findByCategoryName(categoryName)) // Fetch products by category name
                 .map(productMapper::toDtoList) // Map the product entities to DTOs
-                .orElseThrow(() -> new RuntimeException("Category not found or no products available for this category"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found or no products available for this category"));
     }
 
 }

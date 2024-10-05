@@ -1,5 +1,6 @@
 package com.uthmanIV.e_commerce.product.service;
 
+import com.uthmanIV.e_commerce.commons.ResourceNotFoundException;
 import com.uthmanIV.e_commerce.product.DAO.CategoryDAO;
 import com.uthmanIV.e_commerce.product.DTO.CategoryDTO;
 import com.uthmanIV.e_commerce.product.entities.Category;
@@ -35,13 +36,13 @@ public class CategoryService implements CategoryDAO {
     @Override
     public Category findCategoryById(int id) {
         return categoryRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Not found"));
     }
 
     @Override
     public Category findCategoryByName(String name) {
         return categoryRepository.findByName(name)
-                .orElseThrow(()-> new RuntimeException("Not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Not found"));
     }
 
     @Override
@@ -54,7 +55,7 @@ public class CategoryService implements CategoryDAO {
         return Optional.of(categoryMapper.toEntity(dto))
                 .filter(categoryDTO -> !categoryRepository.existsByName(dto.name()))
                 .map(categoryRepository::save)
-                .orElseThrow(()-> new RuntimeException("Category already Exists"));
+                .orElseThrow(()-> new ResourceNotFoundException("Category already Exists"));
     }
     @Override
     public Category updateExistingCategory(CategoryDTO dto){
@@ -64,7 +65,7 @@ public class CategoryService implements CategoryDAO {
                     categoryRepository.save(category);
                     return category;
                 })
-                .orElseThrow(()-> new RuntimeException("Category not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Category not found"));
     }
 
     @Override
@@ -72,7 +73,7 @@ public class CategoryService implements CategoryDAO {
          categoryRepository
                  .findByName(categoryName)
                  .ifPresentOrElse(categoryRepository::delete,() -> {
-                     throw  new RuntimeException("Category not found");
+                     throw  new ResourceNotFoundException("Category not found");
                  });
     }
 }
