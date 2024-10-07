@@ -2,7 +2,6 @@ package com.uthmanIV.e_commerce.product.service;
 
 import com.uthmanIV.e_commerce.commons.ResourceNotFoundException;
 import com.uthmanIV.e_commerce.product.DAO.ProductDAO;
-import com.uthmanIV.e_commerce.product.DTO.CategoryDTO;
 import com.uthmanIV.e_commerce.product.DTO.ProductDTO;
 import com.uthmanIV.e_commerce.product.DTO.ProductResponseDTO;
 import com.uthmanIV.e_commerce.product.entities.Category;
@@ -88,6 +87,18 @@ public class ProductService implements ProductDAO {
                 .map(category -> productRepository.findByCategoryName(categoryName)) // Fetch products by category name
                 .map(productMapper::toDtoList) // Map the product entities to DTOs
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found or no products available for this category"));
+    }
+
+    @Override
+    public int stock(int productId) {
+        Optional<Product> optional= Optional.ofNullable(productRepository.findById(productId)
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found")));
+        if (optional.isPresent()){
+            return optional.get().getStock();
+        }
+        else{
+            throw new ResourceNotFoundException("product not found");
+        }
     }
 
 }

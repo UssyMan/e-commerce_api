@@ -16,4 +16,5 @@ public interface ProductDAO {
 
     Product findProductByName(String name);
     List<ProductResponseDTO> findByCategory(String CategoryName);
+    int stock(int productId);
 }
