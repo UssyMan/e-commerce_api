@@ -27,7 +27,7 @@ public class Customer {
     @NotBlank(message = "address is required")
     private String address;
 
-    @Column(name = "registration-date")
+    @Column(name = "registration_date")
     private LocalDate registrationDate;
 
     @OneToMany(mappedBy = "customer")

@@ -30,7 +30,7 @@ public class Cart {
     @Column(name = "amount")
     private BigDecimal totalAmount;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 
 

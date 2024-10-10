@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "cart_items")
 @Getter
@@ -17,7 +19,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
@@ -26,7 +28,11 @@ public class CartItem {
     private Product product;
 
     private int quantity;
+    private BigDecimal unitPrice;
+    private BigDecimal totalPrice;
 
-    // Constructors, Getters, Setters, etc.
+    public void setTotalPrice() {
+        this.totalPrice = new BigDecimal(quantity).multiply(this.unitPrice);
+    }
 }
 
