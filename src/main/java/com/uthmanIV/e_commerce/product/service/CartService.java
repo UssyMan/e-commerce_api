@@ -37,10 +37,6 @@ public class CartService implements CartDAO {
         return null;
     }
 
-    @Override
-    public CartItemDTO updateCartItemQuantity(int cartItemId, int quantityId) {
-        return null;
-    }
 
     @Override
     public void addCartItem(CartItemDTO dto) {
@@ -63,7 +59,7 @@ public class CartService implements CartDAO {
         if (!removed) {
             throw new ResourceNotFoundException("CartItem with id " + cartItemId + " not found in the cart");
         }
-        // Save the updated Cart
+        cart.resetTotalOnItemRemoval(cartItem.getTotalPrice());
         cartRepository.save(cart);
     }
 
@@ -78,5 +74,18 @@ public class CartService implements CartDAO {
     @Override
     public BigDecimal cartTotalPrice(int cartId) {
         return null;
+    }
+
+    @Override
+    public void updateCartItemQuantity(int cartItemId,int newQuantity) {
+        cartItemRepository.findById(cartItemId)
+                .ifPresent(cartItem-> {
+                    Cart cart =(cartRepository.findByCartItemId(cartItemId)).get();
+                    BigDecimal oldCartItemTotal = cartItem.getTotalPrice();
+                    cartItem.setQuantity(newQuantity);
+                    cartItem.setTotalPrice();
+                    cart.resetTotalOnItemQuantityChange(oldCartItemTotal,cartItem.getTotalPrice());
+                    cartItemRepository.save(cartItem);
+                });
     }
 }

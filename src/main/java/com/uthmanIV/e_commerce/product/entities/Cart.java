@@ -28,11 +28,19 @@ public class Cart {
     private Order order;
 
     @Column(name = "amount")
-    private BigDecimal totalAmount;
+    private BigDecimal totalAmount= BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 
-
+    public void updateTotalAmount(BigDecimal lastCartItemTotal){
+        totalAmount = totalAmount.add(lastCartItemTotal);
+    }
+    public void resetTotalOnItemRemoval(BigDecimal removedItemTotal){
+        setTotalAmount(totalAmount.subtract(removedItemTotal));
+    }
+    public void resetTotalOnItemQuantityChange(BigDecimal oldItemTotal, BigDecimal newItemTotal){
+        totalAmount = totalAmount.subtract(oldItemTotal).add(newItemTotal);
+    }
 }
 

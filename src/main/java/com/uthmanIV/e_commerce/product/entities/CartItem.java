@@ -29,7 +29,7 @@ public class CartItem {
 
     private int quantity;
     private BigDecimal unitPrice;
-    private BigDecimal totalPrice;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
     public void setTotalPrice() {
         this.totalPrice = new BigDecimal(quantity).multiply(this.unitPrice);
