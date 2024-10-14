@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "carts")
+@Table(name = "cart")
 @Getter
 @Setter
 @AllArgsConstructor

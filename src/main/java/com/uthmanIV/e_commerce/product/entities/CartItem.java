@@ -27,6 +27,7 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
+
     private int quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice = BigDecimal.ZERO;

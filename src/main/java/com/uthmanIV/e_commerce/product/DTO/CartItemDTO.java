@@ -1,9 +1,10 @@
 package com.uthmanIV.e_commerce.product.DTO;
 
 import com.uthmanIV.e_commerce.product.entities.Product;
+import jakarta.validation.constraints.NotNull;
 
 public record CartItemDTO(
         Product product,
-        int quantity
+        @NotNull int quantity
 ) {
 }

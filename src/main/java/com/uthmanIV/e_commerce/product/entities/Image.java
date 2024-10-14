@@ -5,16 +5,19 @@ import jakarta.persistence.*;
 import java.sql.Blob;
 
 @Entity
-@Table(name = "images")
+@Table(name = "image")
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String fileName;
+
     private String fileType;
 
     @Lob
     private Blob image;
+
     private String downloadUrl;
 
     @ManyToOne
