@@ -9,6 +9,7 @@ import com.uthmanIV.e_commerce.product.entities.CartItem;
 import com.uthmanIV.e_commerce.product.repositories.CartItemRepository;
 import com.uthmanIV.e_commerce.product.repositories.CartRepository;
 import com.uthmanIV.e_commerce.product.repositories.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,27 +17,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CartService implements CartDAO {
     private final CartRepository cartRepository;
 
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
 
-    public CartService(
-            CartRepository cartRepository,
-            ProductRepository productRepository,
-            CartItemRepository cartItemRepository) {
-        this.cartRepository = cartRepository;
-        this.productRepository = productRepository;
-        this.cartItemRepository = cartItemRepository;
-    }
-
-
     @Override
     public List<ProductResponseDTO> productsInCart(int cartId) {
         return null;
     }
-
 
     @Override
     public void addCartItem(CartItemDTO dto) {

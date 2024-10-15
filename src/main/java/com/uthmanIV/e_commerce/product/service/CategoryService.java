@@ -6,20 +6,17 @@ import com.uthmanIV.e_commerce.product.DTO.CategoryDTO;
 import com.uthmanIV.e_commerce.product.entities.Category;
 import com.uthmanIV.e_commerce.product.mappers.CategoryMapper;
 import com.uthmanIV.e_commerce.product.repositories.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService implements CategoryDAO {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper ;
-
-    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
-        this.categoryRepository = categoryRepository;
-        this.categoryMapper = categoryMapper;
-    }
 
     public Category resolve(String categoryName) {
         // Try to find the category by its name

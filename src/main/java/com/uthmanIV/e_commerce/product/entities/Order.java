@@ -7,10 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "order")
@@ -18,7 +21,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class Order implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,7 +30,7 @@ public class Order {
     @Column(name = "order_date")
     private LocalDate orderDate;
 
-
+    @Enumerated
     private OrderStatus status;
 
     @Column(name = "amount", nullable = false)
@@ -38,4 +42,27 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Order order = (Order) o;
+        return getId() != null && Objects.equals(getId(), order.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "orderDate = " + orderDate + ", " +
+                "status = " + status + ", " +
+                "totalAmount = " + totalAmount + ", " +
+                "customer = " + customer + ")";
+    }
 }

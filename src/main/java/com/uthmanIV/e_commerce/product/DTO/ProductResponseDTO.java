@@ -8,9 +8,13 @@ import java.util.List;
 
 public record ProductResponseDTO(
         String name,
+
         String description,
+
         BigDecimal price,
+
         String categoryName,
+
         List<Image> images
 ) {
 }

@@ -9,27 +9,24 @@ import com.uthmanIV.e_commerce.product.entities.Product;
 import com.uthmanIV.e_commerce.product.mappers.ProductMapper;
 import com.uthmanIV.e_commerce.product.repositories.CategoryRepository;
 import com.uthmanIV.e_commerce.product.repositories.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService implements ProductDAO {
+
     private final ProductRepository productRepository;
 
     private final CategoryService categoryService;
 
     private final ProductMapper productMapper;
+
     private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository, CategoryService categoryService, ProductMapper productMapper,
-                          CategoryRepository categoryRepository) {
-        this.productRepository = productRepository;
-        this.categoryService = categoryService;
-        this.productMapper = productMapper;
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     public ProductResponseDTO addProduct(ProductDTO dto) {
@@ -46,7 +43,6 @@ public class ProductService implements ProductDAO {
 
         return productMapper.toDto(savedProduct);
     }
-
 
     @Override
     public ProductResponseDTO findProductById(int id) {
