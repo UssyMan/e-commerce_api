@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +70,7 @@ public class CartService implements CartDAO {
     public void updateCartItemQuantity(int cartItemId,int newQuantity) {
         cartItemRepository.findById(cartItemId)
                 .ifPresent(cartItem-> {
-                    Cart cart =(cartRepository.findByCartItemId(cartItemId)).get();
+                    Cart cart =(cartRepository.findByCartItemsId(cartItemId)).get();
                     BigDecimal oldCartItemTotal = cartItem.getTotalPrice();
                     cartItem.setQuantity(newQuantity);
                     cartItem.setTotalPrice();
