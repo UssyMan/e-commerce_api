@@ -6,15 +6,12 @@ import com.uthmanIV.e_commerce.user.DTO.UserRequestDTO;
 import com.uthmanIV.e_commerce.user.DTO.UserResponseDTO;
 import com.uthmanIV.e_commerce.user.entities.Role;
 import com.uthmanIV.e_commerce.user.entities.User;
-import com.uthmanIV.e_commerce.user.utils.UserDAO;
 import com.uthmanIV.e_commerce.user.utils.UserMapper;
 import com.uthmanIV.e_commerce.user.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
